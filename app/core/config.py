@@ -24,6 +24,13 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = True
 
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def normalize_database_url(cls, value: object) -> object:
+        if isinstance(value, str) and value.startswith("postgres://"):
+            return "postgresql://" + value[len("postgres://") :]
+        return value
+
     @field_validator("DEBUG", mode="before")
     @classmethod
     def parse_debug_mode(cls, value: object) -> bool:
