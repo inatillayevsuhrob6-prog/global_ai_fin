@@ -42,9 +42,12 @@ optional_oauth2_scheme = OAuth2PasswordBearer(
 
 # Initialize Groq Client
 try:
-    groq_client = Groq(api_key=settings.GROQ_API_KEY)
+    groq_api_key = settings.GROQ_API_KEY.strip()
+    if not groq_api_key:
+        raise ValueError("GROQ_API_KEY is empty")
+    groq_client = Groq(api_key=groq_api_key)
 except Exception as e:
-    print(f"Warning: Could not initialize Groq client: {e}")
+    print(f"Warning: Could not initialize Groq client: {type(e).__name__}: {e}")
     groq_client = None
 
 # Static files
@@ -184,7 +187,11 @@ async def chat_with_ai(
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy"}
+    return {
+        "status": "healthy",
+        "ai_configured": groq_client is not None,
+        "groq_model": settings.GROQ_MODEL,
+    }
 
 if __name__ == "__main__":
     import uvicorn
