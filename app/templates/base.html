@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - GLOBAL AI FIN-ASSISTANT</title>
+    <script>
+        (() => {
+            const saved = localStorage.getItem("global-ai-fin-theme-v2");
+            document.documentElement.dataset.theme = saved === "light" ? "light" : "dark";
+        })();
+    </script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { transition: background-color .25s ease, color .25s ease; }
+        html[data-theme="dark"] body { color: #f8fafc; background: #071226; }
+        html[data-theme="dark"] .glass-effect { background: rgba(12,22,43,.82); border-color: rgba(96,165,250,.16); backdrop-filter: blur(18px); }
+        html[data-theme="dark"] input:-webkit-autofill,
+        html[data-theme="dark"] input:-webkit-autofill:hover,
+        html[data-theme="dark"] input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #f8fafc;
+            -webkit-box-shadow: 0 0 0 1000px #111d36 inset;
+            transition: background-color 9999s ease-out;
+        }
+        html[data-theme="light"] body { color: #172033; background: #f5f7fc; }
+        html[data-theme="light"] .glass-effect { background: rgba(255,255,255,.9); border-color: #e4e9f2; box-shadow: 0 20px 60px rgba(34,48,77,.1); backdrop-filter: blur(18px); }
+        html[data-theme="light"] .text-white { color: #172033 !important; }
+        html[data-theme="light"] .text-slate-200,
+        html[data-theme="light"] .text-slate-300 { color: #354158 !important; }
+        html[data-theme="light"] .text-slate-400 { color: #64718a !important; }
+        html[data-theme="light"] .text-slate-500 { color: #78849a !important; }
+        html[data-theme="light"] .text-gray-300 { color: #354158 !important; }
+        html[data-theme="light"] .text-gray-400 { color: #64718a !important; }
+        html[data-theme="light"] .text-gray-500 { color: #78849a !important; }
+        html[data-theme="light"] .bg-black\/30 { background-color: #f8faff !important; }
+        html[data-theme="light"] input:-webkit-autofill,
+        html[data-theme="light"] input:-webkit-autofill:hover,
+        html[data-theme="light"] input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #172033;
+            -webkit-box-shadow: 0 0 0 1000px #f8faff inset;
+            transition: background-color 9999s ease-out;
+        }
+        html[data-theme="light"] [class~="bg-white/5"],
+        html[data-theme="light"] [class~="bg-white/10"] { background-color: #f1f5fb !important; }
+        html[data-theme="light"] [class~="border-white/10"] { border-color: #dfe5ef !important; }
+        html[data-theme="light"] input { color-scheme: light; }
+        html[data-theme="light"] input::placeholder { color: #98a2b3; }
+        html[data-theme="light"] #intro-overlay { background-color: #f5f7fc; }
+        html[data-theme="light"] .theme-toggle-public { border-color: #dfe5ef; background: rgba(255,255,255,.94); color: #354158; }
+        html[data-theme="dark"] .theme-toggle-public { border-color: rgba(255,255,255,.12); background: rgba(15,23,42,.94); color: #e2e8f0; }
+        html[data-theme="dark"] { color-scheme: dark; }
+        html[data-theme="light"] { color-scheme: light; }
+        .theme-toggle-public { position: fixed; top: 5.5rem; right: 1rem; z-index: 50; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        /* Animations */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="text-white bg-slate-900 min-h-screen selection:bg-blue-500 selection:text-white">
+    <button type="button" data-theme-toggle class="theme-toggle-public flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-lg shadow-slate-900/10 backdrop-blur transition hover:-translate-y-0.5 hover:shadow-xl" aria-label="Rang mavzusini almashtirish">
+        <i data-lucide="moon" data-theme-icon class="h-4 w-4"></i>
+        <span data-theme-label>Qorong'i</span>
+    </button>
+    {% block content %}{% endblock %}
+    
+    <script>
+        // Initialize Lucide icons globally
+        lucide.createIcons();
+    </script>
+    <script src="/static/js/theme.js"></script>
+</body>
+</html>

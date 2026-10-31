@@ -1,0 +1,40 @@
+databases:
+  - name: global-ai-fin-db
+    plan: free
+    databaseName: global_ai_fin
+    user: global_ai_fin
+
+services:
+  - type: web
+    name: global-ai-fin-assistant
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: alembic upgrade head
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: global-ai-fin-db
+          property: connectionString
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: APP_NAME
+        value: GLOBAL AI FIN-ASSISTANT
+      - key: APP_VERSION
+        value: 1.0.0
+      - key: DEBUG
+        value: false

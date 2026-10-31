@@ -1,0 +1,157 @@
+{% extends "base_dashboard.html" %}
+
+{% block content %}
+<div class="mx-auto max-w-7xl">
+    <section data-section="overview" class="page-section page-enter space-y-7">
+        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div>
+                <p class="mb-2 text-xs font-semibold uppercase tracking-[.22em] text-blue-300">Moliyaviy boshqaruv paneli</p>
+                <h1 class="text-2xl font-bold sm:text-3xl">Xush kelibsiz, <span id="welcome-name">Foydalanuvchi</span>! <span class="inline-block origin-bottom-right animate-bounce">👋</span></h1>
+                <p class="mt-2 text-sm text-slate-400">Moliyaviy holatingizni bir joyda kuzating va boshqaring.</p>
+            </div>
+            <button type="button" data-go-page="transactions" class="action-button inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-5 py-3 text-sm font-semibold shadow-lg shadow-blue-900/30">
+                <i data-lucide="plus" class="mr-2 h-4 w-4"></i>Yangi operatsiya
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+            <article class="stat-card glass-panel relative overflow-hidden rounded-2xl p-5 sm:p-6">
+                <div class="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-blue-500/10 blur-3xl"></div>
+                <p class="relative text-sm text-slate-400">Umumiy balans</p>
+                <p id="stat-balance" class="relative mt-3 text-3xl font-bold tracking-tight"><span data-stat-number>0 </span><span class="text-base font-normal text-slate-500">so'm</span></p>
+                <p class="relative mt-4 flex items-center text-xs text-blue-300"><i data-lucide="wallet" class="mr-2 h-4 w-4"></i>Barcha operatsiyalar bo'yicha</p>
+            </article>
+            <article class="stat-card glass-panel relative overflow-hidden rounded-2xl p-5 sm:p-6">
+                <div class="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-emerald-500/10 blur-3xl"></div>
+                <p class="relative text-sm text-slate-400">Joriy oy daromadi</p>
+                <p id="stat-income" class="relative mt-3 text-3xl font-bold tracking-tight"><span data-stat-number>0 </span><span class="text-base font-normal text-slate-500">so'm</span></p>
+                <p class="relative mt-4 flex items-center text-xs text-emerald-300"><i data-lucide="trending-up" class="mr-2 h-4 w-4"></i>Kiruvchi mablag'</p>
+            </article>
+            <article class="stat-card glass-panel relative overflow-hidden rounded-2xl p-5 sm:p-6">
+                <div class="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-rose-500/10 blur-3xl"></div>
+                <p class="relative text-sm text-slate-400">Joriy oy xarajati</p>
+                <p id="stat-expense" class="relative mt-3 text-3xl font-bold tracking-tight"><span data-stat-number>0 </span><span class="text-base font-normal text-slate-500">so'm</span></p>
+                <p class="relative mt-4 flex items-center text-xs text-rose-300"><i data-lucide="trending-down" class="mr-2 h-4 w-4"></i>Chiquvchi mablag'</p>
+            </article>
+            <article class="stat-card glass-panel relative overflow-hidden rounded-2xl p-5 sm:p-6">
+                <div class="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-cyan-500/10 blur-3xl"></div>
+                <p class="relative text-sm text-slate-400">Oylik sof farq</p>
+                <p id="stat-net" class="relative mt-3 text-3xl font-bold tracking-tight"><span data-stat-number>0 </span><span class="text-base font-normal text-slate-500">so'm</span></p>
+                <p class="relative mt-4 flex items-center text-xs text-cyan-300"><i data-lucide="scale" class="mr-2 h-4 w-4"></i>Daromad − xarajat</p>
+            </article>
+            <article class="stat-card glass-panel relative overflow-hidden rounded-2xl p-5 sm:p-6">
+                <div class="absolute -right-8 -top-10 h-36 w-36 rounded-full bg-indigo-500/10 blur-3xl"></div>
+                <p class="relative text-sm text-slate-400">Faol jamg'arma maqsadlari</p>
+                <p id="stat-goal-count" class="relative mt-3 text-3xl font-bold tracking-tight"><span data-stat-number>0</span></p>
+                <p id="stat-savings-rate" class="relative mt-4 flex items-center text-xs text-blue-300"><i data-lucide="target" class="mr-2 h-4 w-4"></i>Jamg'arish: 0%</p>
+            </article>
+        </div>
+
+        <div class="grid gap-5 xl:grid-cols-[1.6fr_1fr]">
+            <section class="glass-panel rounded-2xl p-5 sm:p-6">
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div><h2 class="font-semibold">Daromad va xarajatlar</h2><p class="mt-1 text-xs text-slate-500">Oxirgi 6 oy bo'yicha taqqoslash</p></div>
+                    <div class="flex gap-4 text-xs text-slate-400"><span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-sm bg-blue-500"></i>Daromad</span><span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-sm bg-cyan-400"></i>Xarajat</span></div>
+                </div>
+                <div id="monthly-chart" role="img" aria-label="Oxirgi olti oydagi daromad va xarajatlar" class="mt-6 grid h-48 grid-cols-6 items-end gap-2 sm:gap-4">
+                    <p class="col-span-6 self-center text-center text-sm text-slate-500">Statistika yuklanmoqda...</p>
+                </div>
+            </section>
+            <section class="glass-panel flex flex-col rounded-2xl p-5 sm:p-6">
+                <div class="flex items-start justify-between gap-3">
+                    <div><h2 class="font-semibold">Jamg'arma maqsadlari</h2><p class="mt-1 text-xs text-slate-500">Barcha faol maqsadlaringiz bo'yicha</p></div>
+                    <span class="rounded-xl bg-blue-500/15 p-2.5 text-blue-300"><i data-lucide="target" class="h-5 w-5"></i></span>
+                </div>
+                <p id="goal-progress-amount" class="mt-6 text-lg font-bold text-white">0 so'm / 0 so'm</p>
+                <div class="mt-3 h-2 overflow-hidden rounded-full bg-white/[.07]">
+                    <div id="goal-progress-bar" class="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-all duration-700" style="width: 0%"></div>
+                </div>
+                <p id="goal-progress-label" class="mt-3 text-xs text-slate-400">Hali faol jamg'arma maqsadi yo'q.</p>
+                <button type="button" data-go-page="premium" class="action-button mt-auto inline-flex items-center justify-center gap-2 rounded-xl border border-blue-400/20 bg-blue-500/10 px-4 py-3 text-sm font-semibold text-blue-200 hover:bg-blue-500/20">
+                    <i data-lucide="sparkles" class="h-4 w-4"></i>AI moliya laboratoriyasiga o'tish
+                </button>
+            </section>
+        </div>
+
+        <section class="glass-panel overflow-hidden rounded-2xl">
+            <div class="flex items-center justify-between border-b border-white/[.07] p-5 sm:p-6">
+                <div><h2 class="font-semibold">So'nggi operatsiyalar</h2><p class="mt-1 text-xs text-slate-500">Oxirgi kiritilgan moliyaviy harakatlar</p></div>
+                <button type="button" data-go-page="transactions" class="text-sm font-medium text-blue-300 transition hover:text-blue-200">Barchasi <span aria-hidden="true">→</span></button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[620px] text-left">
+                    <thead class="bg-white/[.025] text-[11px] uppercase tracking-wider text-slate-500">
+                        <tr><th class="px-5 py-4 font-medium">Nomi</th><th class="px-5 py-4 font-medium">Kategoriya</th><th class="px-5 py-4 font-medium">Sana</th><th class="px-5 py-4 text-right font-medium">Summa</th></tr>
+                    </thead>
+                    <tbody id="recent-transactions" class="divide-y divide-white/[.06]">
+                        <tr><td colspan="4" class="px-5 py-10 text-center text-sm text-slate-500">Ma'lumotlar yuklanmoqda...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+
+    <section data-section="transactions" class="page-section hidden space-y-6">
+        <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-violet-300">Kirim va chiqim</p><h1 class="mt-2 text-2xl font-bold">Operatsiyalar</h1><p class="mt-2 text-sm text-slate-400">Daromad va xarajatlaringizni qo'shing, kuzating va boshqaring.</p></div>
+        <form id="transaction-form" class="glass-panel grid gap-4 rounded-2xl p-5 sm:grid-cols-2 lg:grid-cols-6 lg:items-end">
+            <input name="transaction_id" type="hidden">
+            <label class="text-sm text-slate-300">Turi<select name="type" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-violet-400"><option value="expense">Xarajat</option><option value="income">Daromad</option></select></label>
+            <label class="text-sm text-slate-300">Summa (so'm)<input name="amount" type="number" min="1" step="any" required placeholder="150000" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-violet-400"></label>
+            <label class="text-sm text-slate-300">Kategoriya<input name="category" maxlength="50" required placeholder="Oziq-ovqat" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-violet-400"></label>
+            <label class="text-sm text-slate-300">Sana<input name="date" type="date" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-violet-400"></label>
+            <label class="text-sm text-slate-300 lg:col-span-2">Izoh<input name="description" maxlength="500" placeholder="Ixtiyoriy izoh" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-violet-400"></label>
+            <div class="flex gap-2 lg:col-span-6">
+                <button id="transaction-submit" class="action-button flex-1 rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-3 text-sm font-semibold" type="submit">Operatsiyani saqlash</button>
+                <button id="transaction-cancel-edit" class="hidden rounded-xl border border-white/10 px-4 py-3 text-sm text-slate-300 transition hover:bg-white/5" type="button">Bekor qilish</button>
+            </div>
+        </form>
+        <section class="glass-panel overflow-hidden rounded-2xl">
+            <div class="border-b border-white/[.07] p-5"><h2 class="font-semibold">Barcha operatsiyalar</h2></div>
+            <div class="overflow-x-auto"><table class="w-full min-w-[680px] text-left">
+                <thead class="bg-white/[.025] text-[11px] uppercase tracking-wider text-slate-500"><tr><th class="px-5 py-4 font-medium">Nomi</th><th class="px-5 py-4 font-medium">Kategoriya</th><th class="px-5 py-4 font-medium">Sana</th><th class="px-5 py-4 text-right font-medium">Summa</th><th class="px-5 py-4 text-right font-medium">Amal</th></tr></thead>
+                <tbody id="all-transactions" class="divide-y divide-white/[.06]"><tr><td colspan="5" class="px-5 py-10 text-center text-sm text-slate-500">Yuklanmoqda...</td></tr></tbody>
+            </table></div>
+        </section>
+    </section>
+
+    <section data-section="budgets" class="page-section hidden space-y-6">
+        <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-cyan-300">Xarajatlar nazorati</p><h1 class="mt-2 text-2xl font-bold">Byudjetlar</h1><p class="mt-2 text-sm text-slate-400">Kategoriya bo'yicha oylik limit belgilang va sarflanganini kuzating.</p></div>
+        <form id="budget-form" class="glass-panel grid gap-4 rounded-2xl p-5 sm:grid-cols-2 lg:grid-cols-5 lg:items-end">
+            <label class="text-sm text-slate-300">Kategoriya<input name="category" maxlength="50" required placeholder="Transport" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-cyan-400"></label>
+            <label class="text-sm text-slate-300">Oylik limit (so'm)<input name="limit_amount" type="number" min="1" step="any" required placeholder="1000000" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-cyan-400"></label>
+            <label class="text-sm text-slate-300">Oy<select name="month" id="budget-month" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-cyan-400"></select></label>
+            <label class="text-sm text-slate-300">Yil<input name="year" id="budget-year" type="number" min="2000" max="2200" required class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-cyan-400"></label>
+            <button id="budget-submit" class="action-button rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-4 py-3 text-sm font-semibold" type="submit">Byudjetni saqlash</button>
+        </form>
+        <div id="budget-list" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><div class="glass-panel loading-shimmer h-36 rounded-2xl"></div></div>
+    </section>
+
+    <section data-section="goals" class="page-section hidden space-y-6">
+        <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-emerald-300">Kelajak uchun jamg'arma</p><h1 class="mt-2 text-2xl font-bold">Jamg'arma maqsadlari</h1><p class="mt-2 text-sm text-slate-400">Maqsad belgilang va unga yaqinlashayotganingizni kuzating.</p></div>
+        <form id="goal-form" class="glass-panel grid gap-4 rounded-2xl p-5 sm:grid-cols-2 lg:grid-cols-4 lg:items-end">
+            <label class="text-sm text-slate-300">Maqsad nomi<input name="name" maxlength="100" required placeholder="Yangi noutbuk" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-emerald-400"></label>
+            <label class="text-sm text-slate-300">Kerakli summa (so'm)<input name="target_amount" type="number" min="1" step="any" required placeholder="12000000" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-emerald-400"></label>
+            <label class="text-sm text-slate-300">Muddat<input name="deadline" type="date" class="mt-2 w-full rounded-xl border border-white/10 bg-slate-950/70 px-3 py-3 text-white outline-none focus:border-emerald-400"></label>
+            <button class="action-button rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-3 text-sm font-semibold" type="submit">Maqsad yaratish</button>
+        </form>
+        <div id="goal-list" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"><div class="glass-panel loading-shimmer h-40 rounded-2xl"></div></div>
+    </section>
+
+    {% include "premium.html" %}
+
+    <section data-section="assistant" class="page-section hidden">
+        <div class="mx-auto max-w-3xl space-y-6">
+            <div><p class="text-xs font-semibold uppercase tracking-[.22em] text-pink-300">Moliyaviy savollaringizga</p><h1 class="mt-2 text-2xl font-bold">AI yordamchi</h1><p class="mt-2 text-sm text-slate-400">Byudjet, jamg'arma va kundalik moliya haqida o'zbek tilida so'rang.</p></div>
+            <section class="glass-panel flex min-h-[60vh] flex-col overflow-hidden rounded-2xl">
+                <div id="chat-messages" class="flex-1 space-y-4 overflow-y-auto p-5 sm:p-6" aria-live="polite">
+                    <div class="max-w-[85%] rounded-2xl rounded-tl-sm border border-violet-400/15 bg-violet-500/10 p-4 text-sm leading-6 text-slate-200">Salom! Xarajatlaringizni rejalashtirish yoki byudjet tuzishda yordam beraman. Nima haqida bilmoqchisiz?</div>
+                </div>
+                <form id="chat-form" class="flex gap-3 border-t border-white/[.07] p-4 sm:p-5">
+                    <input name="message" maxlength="2000" required placeholder="Savolingizni yozing..." class="min-w-0 flex-1 rounded-xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-violet-400">
+                    <button class="action-button flex shrink-0 items-center rounded-xl bg-gradient-to-r from-violet-600 to-blue-600 px-4 py-3 text-sm font-semibold" type="submit" aria-label="Yuborish"><i data-lucide="send" class="h-4 w-4 sm:mr-2"></i><span class="hidden sm:inline">Yuborish</span></button>
+                </form>
+            </section>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+<section data-section="premium" class="page-section hidden space-y-7">
+    <div>
+        <p class="text-xs font-semibold uppercase tracking-[.22em] text-violet-300">AI moliya laboratoriyasi</p>
+        <h1 class="mt-2 text-2xl font-bold sm:text-3xl">Moliya uchun aqlli vositalar</h1>
+        <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Prognozlar taxminiy matematik ssenariylardir. Hech bir tavsiya sizning tasdig'ingizsiz hisoblaringizni o'zgartirmaydi.</p>
+    </div>
+
+    <div class="grid gap-5 xl:grid-cols-2">
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-violet-500/15 p-3 text-violet-200"><i data-lucide="bot" class="h-5 w-5"></i></span><div><h2 class="font-semibold">AI Autopilot</h2><p class="mt-1 text-xs text-slate-500">Tahlil qiladi, tavsiya beradi — o'zi o'zgartirmaydi.</p></div></div>
+            <button id="autopilot-run" class="action-button rounded-xl bg-violet-600/80 px-4 py-2.5 text-sm font-semibold">Moliyamni tahlil qilish</button>
+            <div id="autopilot-results" class="mt-4 space-y-3 text-sm text-slate-300"><p class="text-slate-500">Tahlilni boshlash uchun bosing.</p></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-blue-500/15 p-3 text-blue-200"><i data-lucide="orbit" class="h-5 w-5"></i></span><div><h2 class="font-semibold">Digital Twin · Time Machine</h2><p class="mt-1 text-xs text-slate-500">Tanlangan parametrlar bilan balans prognozi.</p></div></div>
+            <form id="twin-form" class="grid gap-3 sm:grid-cols-2">
+                <label class="text-xs text-slate-400">Oylik daromad<input name="monthly_income" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Oylik xarajat<input name="monthly_expenses" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Oylik jamg'arma<input name="monthly_savings" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Yillik inflyatsiya (%)<input name="annual_inflation_percent" type="number" min="0" max="100" step="0.1" required value="8" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Prognoz muddati<select name="months" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"><option value="6">6 oy</option><option value="12" selected>1 yil</option><option value="24">2 yil</option><option value="36">3 yil</option><option value="60">5 yil</option></select></label>
+                <button class="action-button self-end rounded-lg bg-blue-600/80 px-4 py-2.5 text-sm font-semibold" type="submit">Prognoz tuzish</button>
+            </form>
+            <canvas id="twin-chart" height="150" class="mt-5 hidden w-full"></canvas>
+            <div id="twin-result" class="mt-3 text-sm text-slate-300"></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-amber-500/15 p-3 text-amber-200"><i data-lucide="shield-check" class="h-5 w-5"></i></span><div><h2 class="font-semibold">Financial War Room</h2><p class="mt-1 text-xs text-slate-500">6 tahlilchi: budjet, jamg'arma, xavf, prognoz, obuna va hisobot.</p></div></div>
+            <button id="war-room-run" class="action-button rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 px-4 py-2.5 text-sm font-semibold">Run Full Financial Analysis</button>
+            <div id="war-room-results" class="mt-4 grid gap-3 sm:grid-cols-2"><p class="text-sm text-slate-500">Tahlilni boshlash uchun bosing.</p></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-emerald-500/15 p-3 text-emerald-200"><i data-lucide="map" class="h-5 w-5"></i></span><div><h2 class="font-semibold">Life Event Planner</h2><p class="mt-1 text-xs text-slate-500">Safar, o'qish yoki xarid uchun jamg'arma rejasini hisoblang.</p></div></div>
+            <form id="life-plan-form" class="grid gap-3 sm:grid-cols-2">
+                <label class="text-xs text-slate-400">Maqsad<input name="name" maxlength="100" required placeholder="Sayohat" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Kerakli summa<input name="target_amount" type="number" min="1" required placeholder="8000000" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Hozirgi jamg'arma<input name="current_savings" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Necha oyda<input name="months" type="number" min="1" max="600" required value="12" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <button class="action-button rounded-lg bg-emerald-600/80 px-4 py-2.5 text-sm font-semibold sm:col-span-2" type="submit">Reja hisoblash</button>
+            </form>
+            <div id="life-plan-result" class="mt-4 text-sm text-slate-300"></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-cyan-500/15 p-3 text-cyan-200"><i data-lucide="scale" class="h-5 w-5"></i></span><div><h2 class="font-semibold">Financial Decision Lab</h2><p class="mt-1 text-xs text-slate-500">Jamg'arma rejalarini yonma-yon taqqoslang.</p></div></div>
+            <form id="decision-form" class="grid gap-3 sm:grid-cols-2">
+                <label class="text-xs text-slate-400">Maqsad summasi<input name="target_amount" type="number" min="1" required placeholder="10000000" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Hozirgi jamg'arma<input name="current_savings" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Oylik daromad<input name="monthly_income" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <label class="text-xs text-slate-400">Oylik xarajat<input name="monthly_expenses" type="number" min="0" required value="0" class="mt-1.5 w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></label>
+                <div class="sm:col-span-2"><p class="mb-2 text-xs text-slate-400">Ssenariylar uchun oylik jamg'arma</p><div class="grid grid-cols-2 gap-3"><input name="savings_a" type="number" min="0" required value="300000" aria-label="A ssenariy jamg'armasi" class="w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"><input name="savings_b" type="number" min="0" required value="500000" aria-label="B ssenariy jamg'armasi" class="w-full rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"></div></div>
+                <button class="action-button rounded-lg bg-cyan-600/80 px-4 py-2.5 text-sm font-semibold sm:col-span-2" type="submit">Ssenariylarni taqqoslash</button>
+            </form>
+            <div id="decision-result" class="mt-4 grid gap-3 sm:grid-cols-2"></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-pink-500/15 p-3 text-pink-200"><i data-lucide="file-up" class="h-5 w-5"></i></span><div><h2 class="font-semibold">AI Document Intelligence</h2><p class="mt-1 text-xs text-slate-500">CSV/XLSX'ni ko'rib chiqing; import faqat tasdiqlaganingizdan keyin.</p></div></div>
+            <form id="document-form" class="flex flex-col gap-3 sm:flex-row">
+                <input name="file" type="file" accept=".csv,.xlsx,.pdf,.png,.jpg,.jpeg,.webp" required class="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-slate-300 file:mr-3 file:rounded-md file:border-0 file:bg-white/10 file:px-3 file:py-2 file:text-xs file:text-white">
+                <button class="action-button rounded-lg bg-pink-600/80 px-4 py-2.5 text-sm font-semibold" type="submit">Hujjatni tahlil qilish</button>
+            </form>
+            <div id="document-results" class="mt-4 space-y-3"></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6">
+            <div class="mb-5 flex items-start gap-3"><span class="rounded-xl bg-indigo-500/15 p-3 text-indigo-200"><i data-lucide="brain" class="h-5 w-5"></i></span><div><h2 class="font-semibold">Financial Memory</h2><p class="mt-1 text-xs text-slate-500">Faqat yoqsangiz saqlanadi; o'chirsangiz barcha yozuvlar tozalanadi.</p></div></div>
+            <label class="flex cursor-pointer items-center gap-3 text-sm text-slate-300"><input id="memory-enabled" type="checkbox" class="h-4 w-4 accent-violet-500"><span>Xotiradan foydalanishga roziman</span></label>
+            <form id="memory-form" class="mt-4 flex gap-2">
+                <input name="content" maxlength="1000" required placeholder="Masalan: 2027-yil yozida noutbuk olishni rejalashtiryapman" class="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white">
+                <button class="rounded-lg bg-indigo-600/80 px-3 py-2.5 text-xs font-semibold" type="submit">Eslab qolish</button>
+            </form>
+            <div class="mt-3 flex gap-2"><button id="memory-refresh" class="text-xs text-indigo-300 hover:text-indigo-200">Xotirani yangilash</button><button id="memory-clear" class="text-xs text-rose-300 hover:text-rose-200">Barcha xotirani tozalash</button></div>
+            <div id="memory-list" class="mt-4 space-y-2 text-sm text-slate-300"></div>
+        </article>
+
+        <article class="glass-panel rounded-2xl p-5 sm:p-6 xl:col-span-2">
+            <div class="mb-5 flex flex-wrap items-center justify-between gap-3"><div><h2 class="font-semibold">Financial Search · Report Studio · Pattern Radar</h2><p class="mt-1 text-xs text-slate-500">Operatsiya, maqsad va byudjetlar bo'yicha qidiring; davr hisoboti va aniqlangan takrorlarni ko'ring.</p></div>
+                <div class="flex gap-2"><select id="report-days" class="rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-white"><option value="7">7 kun</option><option value="30">30 kun</option><option value="90">90 kun</option></select><button id="report-run" class="rounded-lg bg-slate-700 px-3 py-2 text-xs font-semibold hover:bg-slate-600">Hisobot olish</button></div>
+            </div>
+            <form id="finance-search-form" class="flex gap-2"><input name="query" required maxlength="100" placeholder="Kategoriya yoki izoh..." class="min-w-0 flex-1 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-2.5 text-sm text-white"><button class="rounded-lg bg-indigo-600/80 px-4 py-2.5 text-sm font-semibold" type="submit">Qidirish</button></form>
+            <div id="finance-search-results" class="mt-4 text-sm text-slate-300"></div>
+            <div id="report-results" class="mt-4 text-sm text-slate-300"></div>
+        </article>
+    </div>
+</section>

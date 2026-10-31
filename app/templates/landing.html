@@ -1,0 +1,550 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- INTRO ANIMATION OVERLAY -->
+<div id="intro-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center transition-opacity duration-1000">
+    <div class="text-center">
+        <div class="relative">
+            <h1 class="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-violet-500 to-cyan-500 opacity-0 transform scale-50 transition-all duration-1000 ease-out" id="intro-text">
+                GLOBAL AI FIN
+            </h1>
+            <div class="absolute -inset-4 bg-blue-500/20 blur-3xl rounded-full opacity-0 animate-pulse" id="intro-glow"></div>
+        </div>
+        <p class="mt-4 text-gray-400 text-lg opacity-0 transition-opacity duration-1000 delay-500" id="intro-sub">
+            Your Smart Financial Future Starts Here
+        </p>
+    </div>
+</div>
+
+<!-- AI CHAT MODAL -->
+<div id="ai-chat-modal" class="fixed inset-0 z-[90] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-effect border border-white/10 rounded-3xl w-full max-w-2xl h-[600px] flex flex-col shadow-2xl relative overflow-hidden">
+        <!-- Modal Header -->
+        <div class="p-6 border-b border-white/10 flex items-center justify-between bg-white/5">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center">
+                    <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold">FinBot AI</h3>
+                    <p class="text-xs text-green-400 flex items-center">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse"></span> Online
+                    </p>
+                </div>
+            </div>
+            <button onclick="closeChat()" class="text-gray-400 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <!-- Chat Messages Area -->
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Welcome message will be inserted here by JS -->
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="p-4 border-t border-white/10 bg-white/5">
+            <form id="chat-form" class="flex items-center space-x-3">
+                <input type="text" id="chat-input" placeholder="Savolingizni yozing..." 
+                       class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                       autocomplete="off">
+                <button type="submit" class="p-3 bg-blue-600 rounded-xl text-white hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" id="send-btn">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<nav class="glass-effect fixed w-full z-50 top-0 border-b border-white/10 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i data-lucide="wallet" class="w-6 h-6 text-white"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-white hidden sm:block">GLOBAL AI FIN</span>
+            </div>
+            
+            <!-- Desktop Menu (NO LANGUAGE SWITCHER) -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                    Xususiyatlar
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all group-hover:w-full"></span>
+                </a>
+                
+                <a href="#ai-demo" class="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                    AI Imkoniyatlari
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-violet-500 transition-all group-hover:w-full"></span>
+                </a>
+                
+                <a href="#about" class="text-sm font-medium text-gray-300 hover:text-white transition-colors relative group">
+                    Biz haqimizda
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-500 transition-all group-hover:w-full"></span>
+                </a>
+                
+                <!-- Auth Buttons -->
+                <div class="flex items-center space-x-4 ml-4">
+                    <a href="/login" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Kirish</a>
+                    <a href="/register" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg text-white text-sm font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all">
+                        Boshlash
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-gray-300 hover:text-white p-2">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden glass-effect border-t border-white/10">
+        <div class="px-4 pt-2 pb-6 space-y-2">
+            <a href="#features" class="block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">Xususiyatlar</a>
+            <a href="#ai-demo" class="block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">AI Imkoniyatlari</a>
+            <a href="#about" class="block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">Biz haqimizda</a>
+            <div class="border-t border-white/10 my-2 pt-2">
+                <a href="/login" class="block px-3 py-3 text-base font-medium text-blue-400">Kirish</a>
+                <a href="/register" class="block px-3 py-3 mt-2 text-center rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold">Ro'yxatdan o'tish</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="pt-32 pb-20 px-4 relative overflow-hidden min-h-screen flex items-center">
+    <!-- Background Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10"></div>
+    
+    <div class="max-w-7xl mx-auto text-center w-full">
+        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm animate-fade-in-up">
+            <span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+            <span class="text-sm text-gray-300 font-medium">Yangi: Groq AI Integration v2.0</span>
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight leading-tight animate-fade-in-up" style="animation-delay: 0.1s;">
+            Moliyangizni <br>
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-violet-400 to-cyan-400">
+                Aqlli Boshqaring
+            </span>
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;">
+            Global AI Fin-Assistant sizning shaxsiy moliyaviy direktoringiz. Xarajatlarni tahlil qiling, byudjet tuzing va kelajakni bashorat qiling.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <a href="/register" class="group relative px-8 py-4 bg-white text-slate-900 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                Bepul Boshlash
+                <i data-lucide="arrow-right" class="inline w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+            <a href="#features" class="px-8 py-4 glass-effect border border-white/10 rounded-xl text-white font-semibold text-lg hover:bg-white/10 transition-all">
+                Batafsil O'rganish
+            </a>
+        </div>
+        
+        <!-- PROFESSIONAL STATS GRID (ONLY 2 ITEMS) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.4s;">
+            <!-- Real-time User Count -->
+            <div class="glass-effect p-8 rounded-3xl border border-white/10 hover:border-blue-500/50 transition-all duration-300 group relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-blue-500/20 transition-all"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-center space-x-3 mb-2">
+                        <i data-lucide="users" class="w-8 h-8 text-blue-400"></i>
+                        <div class="text-5xl font-black text-white" id="stat-users">{{ user_count }}</div>
+                    </div>
+                    <div class="text-sm font-medium text-blue-400 uppercase tracking-widest">Foydalanuvchilar</div>
+                </div>
+            </div>
+            
+            <!-- 24/7 Support -->
+            <div class="glass-effect p-8 rounded-3xl border border-white/10 hover:border-green-500/50 transition-all duration-300 group relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-2xl -mr-10 -mt-10 group-hover:bg-green-500/20 transition-all"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-center space-x-3 mb-2">
+                        <i data-lucide="headphones" class="w-8 h-8 text-green-400"></i>
+                        <div class="text-5xl font-black text-white">24/7</div>
+                    </div>
+                    <div class="text-sm font-medium text-green-400 uppercase tracking-widest">AI Yordam</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-24 px-4 relative">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-3">IMKONIYATLAR</h2>
+            <h3 class="text-3xl md:text-5xl font-bold text-white mb-6">Nima Uchun Aynan Biz?</h3>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                Oddiy hisob-kitoblardan tortib murakkab AI tahlillarigacha - barchasi bitta platformada.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="group p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+                    <i data-lucide="brain-circuit" class="w-7 h-7 text-blue-400"></i>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-3">AI Tahlilchi</h4>
+                <p class="text-gray-400 leading-relaxed">Groq AI yordamida xarajatlaringizni avtomatik tahlil qiling va tejash rejalarini oling.</p>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="group p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent border border-white/10 hover:border-violet-500/50 transition-all duration-300 hover:-translate-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-violet-500/10 flex items-center justify-center mb-6 group-hover:bg-violet-500/20 transition-colors">
+                    <i data-lucide="shield-check" class="w-7 h-7 text-violet-400"></i>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-3">Bank Darajasida Xavfsiz</h4>
+                <p class="text-gray-400 leading-relaxed">Ma'lumotlaringiz shifrlangan va himoyalangan. Hech qanday uchinchi tomon kirimi yo'q.</p>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="group p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent border border-white/10 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors">
+                    <i data-lucide="zap" class="w-7 h-7 text-cyan-400"></i>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-3">Tezkor & Oson</h4>
+                <p class="text-gray-400 leading-relaxed">Intuitiv interfeys orqali soniyalar ichida operatsiyalarni qo'shing va hisobotlarni ko'ring.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Demo Section -->
+<section id="ai-demo" class="py-24 px-4 bg-black/20">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    AI Sizning Shaxsiy Moliyaviy Strategingiz
+                </h2>
+                <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                    Bizning AI tizimi nafaqat xarajatlarni sanaydi, balki ularni tushunadi. U sizga oylik byudjetingizni optimallashtirish, keraksiz obunalarni topish va katta maqsadlarga erishish uchun aniq tavsiyalar beradi.
+                </p>
+                
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center space-x-3 text-gray-300">
+                        <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                        </div>
+                        <span>Aqlli Byudjet Generatori</span>
+                    </li>
+                    <li class="flex items-center space-x-3 text-gray-300">
+                        <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                        </div>
+                        <span>Xarajat Bashorati (Forecast)</span>
+                    </li>
+                    <li class="flex items-center space-x-3 text-gray-300">
+                        <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+                        </div>
+                        <span>Moliyaviy Salomatlik Balli</span>
+                    </li>
+                </ul>
+                
+                <!-- BUTTON TO OPEN CHAT -->
+                <button onclick="openChat()" class="inline-flex items-center text-blue-400 font-semibold hover:text-blue-300 transition-colors cursor-pointer">
+                    AI bilan tanishing <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                </button>
+            </div>
+            
+            <!-- Visual Representation of AI Chat -->
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-violet-500 rounded-3xl blur-2xl opacity-20"></div>
+                <div class="relative glass-effect border border-white/10 rounded-3xl p-6 shadow-2xl">
+                    <div class="flex items-center space-x-3 mb-6 border-b border-white/10 pb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center">
+                            <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-semibold">FinBot AI</div>
+                            <div class="text-xs text-green-400 flex items-center">
+                                <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span> Online
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-end">
+                            <div class="bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
+                                <p class="text-sm text-gray-200">Oylik xarajatlarimni qanday kamaytirishim mumkin?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-start">
+                            <div class="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[90%]">
+                                <p class="text-sm text-gray-300 mb-2">Tahlillarga ko'ra, sizning ovqatlanish xarajatlaringiz o'tgan oyga nisbatan 20% ga oshgan.</p>
+                                <p class="text-sm text-gray-300">Tavsiya: Haftalik menyu tuzing va tashqi ovqatlanishni haftada 1 martagacha cheklang. Bu sizga oyiga taxminan 400,000 so'm tejashga yordam beradi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-white/10 flex items-center space-x-2">
+                        <input type="text" placeholder="Savol bering..." class="flex-1 bg-black/30 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors" disabled>
+                        <button class="p-2 bg-blue-600 rounded-xl text-white hover:bg-blue-500 transition-colors">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">Biz Haqimizda</h2>
+        <p class="text-lg text-gray-400 mb-12 leading-relaxed">
+            GLOBAL AI FIN-ASSISTANT — bu shunchaki dastur emas, bu sizning moliyaviy erkinligingizga yo'l. Bizning maqsadimiz har bir insonning moliyaviy savodxonligini oshirish va sun'iy intellekt kuchidan foydalanib, kelajakni bugundan boshlab qurishga yordam berishdir.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="p-6">
+                <div class="w-12 h-12 mx-auto bg-blue-500/10 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
+                </div>
+                <h3 class="text-white font-bold mb-2">Jamoa</h3>
+                <p class="text-sm text-gray-500">Tajribali dasturchilar va moliyachilar jamoasi</p>
+            </div>
+            <div class="p-6">
+                <div class="w-12 h-12 mx-auto bg-violet-500/10 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="rocket" class="w-6 h-6 text-violet-400"></i>
+                </div>
+                <h3 class="text-white font-bold mb-2">Missiya</h3>
+                <p class="text-sm text-gray-500">Moliyaviy texnologiyalarni hammabop qilish</p>
+            </div>
+            <div class="p-6">
+                <div class="w-12 h-12 mx-auto bg-cyan-500/10 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="heart" class="w-6 h-6 text-cyan-400"></i>
+                </div>
+                <h3 class="text-white font-bold mb-2">Qiymat</h3>
+                <p class="text-sm text-gray-500">Foydalanuvchi ishonchi va shaffoflik</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-violet-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="wallet" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="font-bold text-white">GLOBAL AI FIN</span>
+                </div>
+                <p class="text-gray-500 text-sm">
+                    Your Smart Financial Future Starts Here.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold mb-4">Platforma</h4>
+                <ul class="space-y-2 text-sm text-gray-500">
+                    <li><a href="#features" class="hover:text-blue-400 transition-colors">Xususiyatlar</a></li>
+                    <li><a href="#ai-demo" class="hover:text-blue-400 transition-colors">AI Demo</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Xavfsizlik</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold mb-4">Kompaniya</h4>
+                <ul class="space-y-2 text-sm text-gray-500">
+                    <li><a href="#about" class="hover:text-blue-400 transition-colors">Biz haqimizda</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Karyera</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Aloqa</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-semibold mb-4">Huquqiy</h4>
+                <ul class="space-y-2 text-sm text-gray-500">
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Maxfiylik</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition-colors">Shartlar</a></li>
+                    <li><a href="/admin" class="hover:text-blue-400 transition-colors">Admin Panel</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
+            <p>&copy; 2026 GLOBAL AI FIN-ASSISTANT. Barcha huquqlar himoyalangan.</p>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="hover:text-gray-400"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                <a href="#" class="hover:text-gray-400"><i data-lucide="github" class="w-4 h-4"></i></a>
+                <a href="#" class="hover:text-gray-400"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // --- INTRO ANIMATION LOGIC ---
+    window.addEventListener('load', () => {
+        const overlay = document.getElementById('intro-overlay');
+        const text = document.getElementById('intro-text');
+        const sub = document.getElementById('intro-sub');
+        const glow = document.getElementById('intro-glow');
+
+        setTimeout(() => {
+            text.classList.remove('opacity-0', 'scale-50');
+            text.classList.add('opacity-100', 'scale-100');
+            glow.classList.remove('opacity-0');
+        }, 100);
+
+        setTimeout(() => {
+            sub.classList.remove('opacity-0');
+        }, 600);
+
+        setTimeout(() => {
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1000);
+        }, 2500);
+    });
+
+    // --- SMOOTH SCROLL ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if(targetId === '#') return;
+            const targetElement = document.querySelector(targetId);
+            if(targetElement){
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('mobile-menu').classList.add('hidden');
+            }
+        });
+    });
+
+    // --- REAL-TIME USER COUNT UPDATER ---
+    async function updateUserCount() {
+        try {
+            const response = await fetch('/api/stats');
+            const data = await response.json();
+            const statEl = document.getElementById('stat-users');
+            if(statEl && data.users !== undefined) {
+                statEl.innerText = data.users;
+            }
+        } catch (e) {
+            console.log('Stats update failed', e);
+        }
+    }
+
+    setInterval(updateUserCount, 10000);
+
+    // --- AI CHAT MODAL LOGIC (UZBEK ONLY) ---
+    const chatModal = document.getElementById('ai-chat-modal');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    const WELCOME_MESSAGE_UZ = "Assalomu alaykum! Men Global AI Fin-Assistantman. Sizning shaxsiy moliyaviy yordamchingizman. Menga moliyangiz, byudjetingiz yoki jamg'armangiz haqida savol bering!";
+
+    function openChat() {
+        chatModal.classList.remove('hidden');
+        chatModal.classList.add('flex');
+        
+        // Clear previous messages
+        chatMessages.innerHTML = '';
+        
+        // Add welcome message in Uzbek
+        addMessage(WELCOME_MESSAGE_UZ, 'bot');
+        
+        // Focus input
+        setTimeout(() => chatInput.focus(), 100);
+    }
+
+    function closeChat() {
+        chatModal.classList.add('hidden');
+        chatModal.classList.remove('flex');
+    }
+
+    function addMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+        
+        const bubble = document.createElement('div');
+        bubble.className = sender === 'user' 
+            ? 'bg-blue-600/20 border border-blue-500/30 rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%] text-gray-200'
+            : 'bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[90%] text-gray-300';
+        
+        bubble.innerText = text;
+        msgDiv.appendChild(bubble);
+        chatMessages.appendChild(msgDiv);
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Handle form submit
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        // Disable input while processing
+        chatInput.disabled = true;
+        sendBtn.disabled = true;
+        
+        // Add user message
+        addMessage(message, 'user');
+        chatInput.value = '';
+        
+        // Show typing indicator
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typing-indicator';
+        typingDiv.className = 'flex justify-start';
+        typingDiv.innerHTML = '<div class="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-4 py-3 text-gray-400 text-sm">Yozmoqda...</div>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            
+            // Remove typing indicator
+            const indicator = document.getElementById('typing-indicator');
+            if(indicator) indicator.remove();
+            
+            // Add bot response
+            addMessage(data.response, 'bot');
+        } catch (error) {
+            console.error('Chat error:', error);
+            const indicator = document.getElementById('typing-indicator');
+            if(indicator) indicator.remove();
+            addMessage('Xatolik yuz berdi. Qayta urinib ko\'ring.', 'bot');
+        } finally {
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            chatInput.focus();
+        }
+    });
+
+    // Close modal on outside click
+    chatModal.addEventListener('click', (e) => {
+        if (e.target === chatModal) {
+            closeChat();
+        }
+    });
+</script>
+{% endblock %}
