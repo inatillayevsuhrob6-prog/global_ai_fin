@@ -8,7 +8,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from app.core.config import settings
-from app.core.database import SessionLocal, get_db
+from app.core.database import Base, SessionLocal, engine, get_db
 from app.models.user import User
 from app.models.financial_memory import FinancialMemory
 from app.api.auth import router as auth_router
@@ -52,6 +52,10 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Templates
 templates = Jinja2Templates(directory="app/templates")
+
+@app.on_event("startup")
+def initialize_database() -> None:
+    Base.metadata.create_all(bind=engine)
 
 def get_user_count():
     db = SessionLocal()
